@@ -20,12 +20,11 @@ namespace NumberGenerator.Logic
         private const int RANDOM_MIN_VALUE = 1;
         private const int RANDOM_MAX_VALUE = 1000;
 
-        IList<IObserver> _observers = new List<IObserver>();
-
         #endregion
 
         #region Fields
 
+        IList<IObserver> _observers = new List<IObserver>();
 
         #endregion
 
@@ -121,7 +120,13 @@ namespace NumberGenerator.Logic
         /// </summary>
         public void StartNumberGeneration()
         {
-            throw new NotImplementedException();
+            Random random = new Random();
+            while (_observers.Count != 0)
+            {
+                int newNumber = random.Next(RANDOM_MIN_VALUE, RANDOM_MAX_VALUE + 1);
+                Task.Delay(DEFAULT_DELAY).Wait();
+                Console.WriteLine("-----------------------------");
+            }
         }
 
         #endregion

@@ -59,12 +59,14 @@ namespace NumberGenerator.Logic
 
         public override string ToString()
         {
-            throw new NotImplementedException();
+            string str = $"BaseObserver";
+            return str;
         }
 
         protected void DetachFromNumberGenerator()
         {
             throw new NotImplementedException();
+            //_numberGenerator.Detach(BaseObserver);
         }
 
         #endregion

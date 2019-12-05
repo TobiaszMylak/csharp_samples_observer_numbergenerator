@@ -9,6 +9,8 @@ namespace NumberGenerator.Logic
     {
         #region Fields
 
+        int _min = -1;
+
         #endregion
 
         #region Properties
@@ -16,7 +18,24 @@ namespace NumberGenerator.Logic
         /// <summary>
         /// Enthält das Minimum der generierten Zahlen.
         /// </summary>
-        public int Min { get; private set; }
+        public int Min
+        { 
+            get
+            {
+                return _min;
+            }
+            private set
+            {
+                if (_min == -1)
+                {
+                    _min = value;
+                }
+                else if (value < _min)
+                {
+                    _min = value;
+                }
+            }
+        }
 
         /// <summary>
         /// Enthält das Maximum der generierten Zahlen.
