@@ -17,7 +17,6 @@ namespace NumberGenerator.Ui
             RangeObserver rangeObserver = new RangeObserver(numberGenerator, 5, 200, 300);
             QuickTippObserver quickTippObserver = new QuickTippObserver(numberGenerator);
 
-
             // Nummerngenerierung starten
             // Resultat ausgeben
             throw new NotImplementedException();

@@ -39,7 +39,14 @@ namespace NumberGenerator.Logic
 
         public StatisticsObserver(IObservable numberGenerator, int countOfNumbersToWaitFor) : base(numberGenerator, countOfNumbersToWaitFor)
         {
-            throw new NotImplementedException();
+            if (countOfNumbersToWaitFor < 0)
+            {
+                throw new ArgumentException("countOfNumbersToWaitFor is negativ");
+            }
+            else
+            {
+                
+            }
         }
 
         #endregion
