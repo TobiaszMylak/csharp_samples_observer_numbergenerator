@@ -15,7 +15,7 @@ namespace NumberGenerator.Logic
         /// Enthält die untere Schranke (inkl.)
         /// </summary>
         public int LowerRange { get; private set; }
-        
+
         /// <summary>
         /// Enthält die obere Schranke (inkl.)
         /// </summary>
@@ -31,15 +31,13 @@ namespace NumberGenerator.Logic
         /// </summary>
         public int NumbersOfHitsToWaitFor { get; private set; }
 
-        int actualCountOfNumbersReceived = 0;
-
         #endregion
 
         #region Constructors
 
         public RangeObserver(IObservable numberGenerator, int numberOfHitsToWaitFor, int lowerRange, int upperRange) : base(numberGenerator, int.MaxValue)
         {
-            if (numberOfHitsToWaitFor < 0)
+            if (numberOfHitsToWaitFor < 0 || lowerRange > upperRange)
             {
                 throw new ArgumentException();
             }
@@ -59,7 +57,7 @@ namespace NumberGenerator.Logic
 
         public override void OnNextNumber(int number)
         {
-            actualCountOfNumbersReceived++;
+
             if (NumbersInRange >= NumbersOfHitsToWaitFor)
             {
                 DetachFromNumberGenerator();
@@ -68,6 +66,7 @@ namespace NumberGenerator.Logic
             {
                 NumbersInRange++;
             }
+            base.OnNextNumber(number);
         }
 
         #endregion

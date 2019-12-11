@@ -23,6 +23,8 @@ namespace NumberGenerator.Logic
         #endregion
 
         #region Fields
+        int _delay;
+        int _seed;
 
         IList<IObserver> _observers = new List<IObserver>();
 
@@ -52,6 +54,8 @@ namespace NumberGenerator.Logic
         /// <param name="seed">Enthält die Initialisierung der Zufallszahlengenerierung.</param>
         public RandomNumberGenerator(int delay, int seed)
         {
+            _delay = delay;
+            _seed = seed;
         }
 
         #endregion
@@ -75,11 +79,6 @@ namespace NumberGenerator.Logic
             {
                 throw new InvalidOperationException("Observer is already attached!");
             }
-
-            /*if (nameof(observer).ToLower != typeof(observer).ToLower)
-            {
-                throw new ArgumentException();
-            }*/
 
             _observers.Add(observer);
         }
@@ -109,7 +108,10 @@ namespace NumberGenerator.Logic
         /// <param name="number">Die generierte Zahl.</param>
         public void NotifyObservers(int number)
         {
-            throw new NotImplementedException();
+            for (int i = 0; i < _observers.Count; i++)
+            {
+                _observers[i].OnNextNumber(number);
+            }
         }
 
         #endregion
@@ -125,15 +127,12 @@ namespace NumberGenerator.Logic
         /// </summary>
         public void StartNumberGeneration()
         {
-            Random random = new Random();
+            Random random = new Random(_seed);
             while (_observers.Count != 0)
             {
-                int newNumber = random.Next(RANDOM_MIN_VALUE, RANDOM_MAX_VALUE + 1);
-                foreach (BaseObserver obs in _observers)
-                {
-                    obs.OnNextNumber(newNumber);
-                }
-                Task.Delay(DEFAULT_DELAY).Wait();
+                int newNumber = random.Next(RANDOM_MIN_VALUE, RANDOM_MAX_VALUE);
+                NotifyObservers(newNumber);
+                Task.Delay(_delay).Wait();
                 Console.WriteLine("-----------------------------");
             }
         }

@@ -37,7 +37,16 @@ namespace NumberGenerator.Logic
 
         public void OnNextNumber(int number)
         {
-            throw new NotImplementedException();
+            CountOfNumbersReceived++;
+
+            if (number < 46 && !QuickTippNumbers.Contains(number) && QuickTippNumbers.Count < 7)
+            {
+                QuickTippNumbers.Add(number);
+            }
+            if (QuickTippNumbers.Count == 6)
+            {
+                DetachFromNumberGenerator();
+            }
         }
 
         public override string ToString()
