@@ -10,6 +10,9 @@ namespace NumberGenerator.Logic
         #region Fields
 
         int _min = -1;
+        int _max = -1;
+        int _sum = 0;
+        int _avg = 0;
 
         #endregion
 
@@ -18,24 +21,7 @@ namespace NumberGenerator.Logic
         /// <summary>
         /// Enthält das Minimum der generierten Zahlen.
         /// </summary>
-        public int Min
-        { 
-            get
-            {
-                return _min;
-            }
-            private set
-            {
-                if (_min == -1)
-                {
-                    _min = value;
-                }
-                else if (value < _min)
-                {
-                    _min = value;
-                }
-            }
-        }
+        public int Min { get; private set; }
 
         /// <summary>
         /// Enthält das Maximum der generierten Zahlen.
@@ -50,7 +36,9 @@ namespace NumberGenerator.Logic
         /// <summary>
         /// Enthält den Durchschnitt der generierten Zahlen.
         /// </summary>
-        public int Avg => throw new NotImplementedException();
+        public int Avg { get; private set; }
+
+        public int CountOfNumbersReceived { get; private set; }
 
         #endregion
 
@@ -58,14 +46,6 @@ namespace NumberGenerator.Logic
 
         public StatisticsObserver(IObservable numberGenerator, int countOfNumbersToWaitFor) : base(numberGenerator, countOfNumbersToWaitFor)
         {
-            if (countOfNumbersToWaitFor < 0)
-            {
-                throw new ArgumentException("countOfNumbersToWaitFor is negativ");
-            }
-            else
-            {
-                
-            }
         }
 
         #endregion
@@ -74,12 +54,36 @@ namespace NumberGenerator.Logic
 
         public override string ToString()
         {
-            throw new NotImplementedException();
+            return $"{base.ToString()} => StatisticsObserver [Min='{Min}', Max='{Max}', Sum='{Sum}', Avg='{Avg}']";
         }
 
         public override void OnNextNumber(int number)
         {
-            throw new NotImplementedException();
+            CountOfNumbersReceived++;
+            if (_min == -1)
+            {
+                _min = number;
+            }
+            else if (number < _min)
+            {
+                _min = number;
+            }
+            if (_max == -1)
+            {
+                _max = number;
+            }
+            else if (number > _max)
+            {
+                _max = number;
+            }
+            _sum = _sum + number;
+            _avg = _sum / CountOfNumbersReceived;
+            if (CountOfNumbersReceived >= CountOfNumbersToWaitFor)
+            {
+                _avg = _sum / CountOfNumbersReceived;
+                ToString();
+                DetachFromNumberGenerator();
+            }
         }
 
         #endregion

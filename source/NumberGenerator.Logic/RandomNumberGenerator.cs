@@ -76,6 +76,11 @@ namespace NumberGenerator.Logic
                 throw new InvalidOperationException("Observer is already attached!");
             }
 
+            /*if (nameof(observer).ToLower != typeof(observer).ToLower)
+            {
+                throw new ArgumentException();
+            }*/
+
             _observers.Add(observer);
         }
 
@@ -124,6 +129,10 @@ namespace NumberGenerator.Logic
             while (_observers.Count != 0)
             {
                 int newNumber = random.Next(RANDOM_MIN_VALUE, RANDOM_MAX_VALUE + 1);
+                foreach (BaseObserver obs in _observers)
+                {
+                    obs.OnNextNumber(newNumber);
+                }
                 Task.Delay(DEFAULT_DELAY).Wait();
                 Console.WriteLine("-----------------------------");
             }

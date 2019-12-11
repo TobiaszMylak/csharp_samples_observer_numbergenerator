@@ -26,8 +26,16 @@ namespace NumberGenerator.Logic
 
         public BaseObserver(IObservable numberGenerator, int countOfNumbersToWaitFor)
         {
-            _numberGenerator = numberGenerator;
-            CountOfNumbersToWaitFor = countOfNumbersToWaitFor;
+            if (countOfNumbersToWaitFor < 0)
+            {
+                throw new ArgumentException("countOfNumbersToWaitFor is negativ");
+            }
+            else
+            {
+                _numberGenerator = numberGenerator;
+                CountOfNumbersToWaitFor = countOfNumbersToWaitFor;
+                _numberGenerator.Attach(this);
+            }
         }
 
         #endregion
@@ -52,21 +60,19 @@ namespace NumberGenerator.Logic
                 Console.ResetColor();
                 DetachFromNumberGenerator();
             }
-
         }
 
         #endregion
 
         public override string ToString()
         {
-            string str = $"BaseObserver";
+            string str = $"BaseObserver [CountOfNumbersReceived='{CountOfNumbersReceived}', CountOfNumbersToWaitFor='{CountOfNumbersToWaitFor}']";
             return str;
         }
 
         protected void DetachFromNumberGenerator()
         {
-            throw new NotImplementedException();
-            //_numberGenerator.Detach(BaseObserver);
+            _numberGenerator.Detach(this);
         }
 
         #endregion

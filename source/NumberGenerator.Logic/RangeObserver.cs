@@ -31,13 +31,21 @@ namespace NumberGenerator.Logic
         /// </summary>
         public int NumbersOfHitsToWaitFor { get; private set; }
 
+        int actualCountOfNumbersReceived = 0;
+
         #endregion
 
         #region Constructors
 
         public RangeObserver(IObservable numberGenerator, int numberOfHitsToWaitFor, int lowerRange, int upperRange) : base(numberGenerator, int.MaxValue)
         {
-            throw new NotImplementedException();
+            if (numberOfHitsToWaitFor < 0)
+            {
+                throw new ArgumentException();
+            }
+            NumbersOfHitsToWaitFor = numberOfHitsToWaitFor;
+            LowerRange = lowerRange;
+            UpperRange = upperRange;
         }
 
         #endregion
@@ -51,7 +59,15 @@ namespace NumberGenerator.Logic
 
         public override void OnNextNumber(int number)
         {
-            throw new NotImplementedException();
+            actualCountOfNumbersReceived++;
+            if (NumbersInRange >= NumbersOfHitsToWaitFor)
+            {
+                DetachFromNumberGenerator();
+            }
+            if (number >= LowerRange && number <= UpperRange)
+            {
+                NumbersInRange++;
+            }
         }
 
         #endregion
