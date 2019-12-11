@@ -13,6 +13,7 @@ namespace NumberGenerator.Logic
         int _max = -1;
         int _sum = 0;
         int _avg = 0;
+        int _counter = 0;
 
         #endregion
 
@@ -38,8 +39,6 @@ namespace NumberGenerator.Logic
         /// </summary>
         public int Avg { get; private set; }
 
-        public int CountOfNumbersReceived { get; private set; }
-
         #endregion
 
         #region Constructors
@@ -59,7 +58,7 @@ namespace NumberGenerator.Logic
 
         public override void OnNextNumber(int number)
         {
-            CountOfNumbersReceived++;
+            _counter++;
             if (_min == -1)
             {
                 _min = number;
@@ -77,15 +76,16 @@ namespace NumberGenerator.Logic
                 _max = number;
             }
             _sum = _sum + number;
-            _avg = _sum / CountOfNumbersReceived;
-            if (CountOfNumbersReceived >= CountOfNumbersToWaitFor)
-            {
-                _avg = _sum / CountOfNumbersReceived;
-                ToString();
-                DetachFromNumberGenerator();
-            }
-        }
 
+            _avg = _sum / _counter;
+            Avg = _avg;
+            Min = _min;
+            Max = _max;
+            Sum = _sum;
+
+
+            base.OnNextNumber(number);
+        }
         #endregion
     }
 }
